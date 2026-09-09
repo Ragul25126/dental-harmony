@@ -10,33 +10,193 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AppointmentRouteImport } from './routes/appointment'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as DoctorsRouteImport } from './routes/doctors'
+import { Route as FacilitiesRouteImport } from './routes/facilities'
+import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as TestimonialsRouteImport } from './routes/testimonials'
+import { Route as BlogIndexRouteImport } from './routes/blog/index'
+import { Route as BlogArticleSlugRouteImport } from './routes/blog/$articleSlug'
+import { Route as DrAhamedFouzanIndexRouteImport } from './routes/dr-ahamed-fouzan/index'
+import { Route as ServicesIndexRouteImport } from './routes/services/index'
+import { Route as ServicesServiceSlugRouteImport } from './routes/services/$serviceSlug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppointmentRoute = AppointmentRouteImport.update({
+  id: '/appointment',
+  path: '/appointment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DoctorsRoute = DoctorsRouteImport.update({
+  id: '/doctors',
+  path: '/doctors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FacilitiesRoute = FacilitiesRouteImport.update({
+  id: '/facilities',
+  path: '/facilities',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GalleryRoute = GalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestimonialsRoute = TestimonialsRouteImport.update({
+  id: '/testimonials',
+  path: '/testimonials',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogArticleSlugRoute = BlogArticleSlugRouteImport.update({
+  id: '/blog/$articleSlug',
+  path: '/blog/$articleSlug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DrAhamedFouzanIndexRoute = DrAhamedFouzanIndexRouteImport.update({
+  id: '/dr-ahamed-fouzan/',
+  path: '/dr-ahamed-fouzan/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesIndexRoute = ServicesIndexRouteImport.update({
+  id: '/services/',
+  path: '/services/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesServiceSlugRoute = ServicesServiceSlugRouteImport.update({
+  id: '/services/$serviceSlug',
+  path: '/services/$serviceSlug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/appointment': typeof AppointmentRoute
+  '/contact': typeof ContactRoute
+  '/doctors': typeof DoctorsRoute
+  '/facilities': typeof FacilitiesRoute
+  '/gallery': typeof GalleryRoute
+  '/testimonials': typeof TestimonialsRoute
+  '/blog/$articleSlug': typeof BlogArticleSlugRoute
+  '/services/$serviceSlug': typeof ServicesServiceSlugRoute
+  '/blog/': typeof BlogIndexRoute
+  '/dr-ahamed-fouzan/': typeof DrAhamedFouzanIndexRoute
+  '/services/': typeof ServicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/appointment': typeof AppointmentRoute
+  '/contact': typeof ContactRoute
+  '/doctors': typeof DoctorsRoute
+  '/facilities': typeof FacilitiesRoute
+  '/gallery': typeof GalleryRoute
+  '/testimonials': typeof TestimonialsRoute
+  '/blog/$articleSlug': typeof BlogArticleSlugRoute
+  '/services/$serviceSlug': typeof ServicesServiceSlugRoute
+  '/blog': typeof BlogIndexRoute
+  '/dr-ahamed-fouzan': typeof DrAhamedFouzanIndexRoute
+  '/services': typeof ServicesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/appointment': typeof AppointmentRoute
+  '/contact': typeof ContactRoute
+  '/doctors': typeof DoctorsRoute
+  '/facilities': typeof FacilitiesRoute
+  '/gallery': typeof GalleryRoute
+  '/testimonials': typeof TestimonialsRoute
+  '/blog/$articleSlug': typeof BlogArticleSlugRoute
+  '/services/$serviceSlug': typeof ServicesServiceSlugRoute
+  '/blog/': typeof BlogIndexRoute
+  '/dr-ahamed-fouzan/': typeof DrAhamedFouzanIndexRoute
+  '/services/': typeof ServicesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/appointment'
+    | '/contact'
+    | '/doctors'
+    | '/facilities'
+    | '/gallery'
+    | '/testimonials'
+    | '/blog/$articleSlug'
+    | '/services/$serviceSlug'
+    | '/blog/'
+    | '/dr-ahamed-fouzan/'
+    | '/services/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/appointment'
+    | '/contact'
+    | '/doctors'
+    | '/facilities'
+    | '/gallery'
+    | '/testimonials'
+    | '/blog/$articleSlug'
+    | '/services/$serviceSlug'
+    | '/blog'
+    | '/dr-ahamed-fouzan'
+    | '/services'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/appointment'
+    | '/contact'
+    | '/doctors'
+    | '/facilities'
+    | '/gallery'
+    | '/testimonials'
+    | '/blog/$articleSlug'
+    | '/services/$serviceSlug'
+    | '/blog/'
+    | '/dr-ahamed-fouzan/'
+    | '/services/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AppointmentRoute: typeof AppointmentRoute
+  ContactRoute: typeof ContactRoute
+  DoctorsRoute: typeof DoctorsRoute
+  FacilitiesRoute: typeof FacilitiesRoute
+  GalleryRoute: typeof GalleryRoute
+  TestimonialsRoute: typeof TestimonialsRoute
+  BlogArticleSlugRoute: typeof BlogArticleSlugRoute
+  ServicesServiceSlugRoute: typeof ServicesServiceSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
+  DrAhamedFouzanIndexRoute: typeof DrAhamedFouzanIndexRoute
+  ServicesIndexRoute: typeof ServicesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +208,107 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/appointment': {
+      id: '/appointment'
+      path: '/appointment'
+      fullPath: '/appointment'
+      preLoaderRoute: typeof AppointmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/doctors': {
+      id: '/doctors'
+      path: '/doctors'
+      fullPath: '/doctors'
+      preLoaderRoute: typeof DoctorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/facilities': {
+      id: '/facilities'
+      path: '/facilities'
+      fullPath: '/facilities'
+      preLoaderRoute: typeof FacilitiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gallery': {
+      id: '/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof GalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/testimonials': {
+      id: '/testimonials'
+      path: '/testimonials'
+      fullPath: '/testimonials'
+      preLoaderRoute: typeof TestimonialsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$articleSlug': {
+      id: '/blog/$articleSlug'
+      path: '/blog/$articleSlug'
+      fullPath: '/blog/$articleSlug'
+      preLoaderRoute: typeof BlogArticleSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dr-ahamed-fouzan/': {
+      id: '/dr-ahamed-fouzan/'
+      path: '/dr-ahamed-fouzan'
+      fullPath: '/dr-ahamed-fouzan/'
+      preLoaderRoute: typeof DrAhamedFouzanIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/': {
+      id: '/services/'
+      path: '/services'
+      fullPath: '/services/'
+      preLoaderRoute: typeof ServicesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/$serviceSlug': {
+      id: '/services/$serviceSlug'
+      path: '/services/$serviceSlug'
+      fullPath: '/services/$serviceSlug'
+      preLoaderRoute: typeof ServicesServiceSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AppointmentRoute: AppointmentRoute,
+  ContactRoute: ContactRoute,
+  DoctorsRoute: DoctorsRoute,
+  FacilitiesRoute: FacilitiesRoute,
+  GalleryRoute: GalleryRoute,
+  TestimonialsRoute: TestimonialsRoute,
+  BlogArticleSlugRoute: BlogArticleSlugRoute,
+  ServicesServiceSlugRoute: ServicesServiceSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
+  DrAhamedFouzanIndexRoute: DrAhamedFouzanIndexRoute,
+  ServicesIndexRoute: ServicesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
