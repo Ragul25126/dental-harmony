@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -15,6 +15,7 @@ import {
 import { AppointmentModal } from "@/components/AppointmentModal";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
+import { CoverFlowCarousel, CarouselItem } from "@/components/ui/3-d-coverflow-carousel";
 
 export const Route = createFileRoute("/")({ component: Index });
 
@@ -332,71 +333,41 @@ function Index() {
         </div>
       </section>
 
-      {/* SERVICES / TREATMENTS SECTION — REBUILT WITH EXACT 8 HOMEPAGE ZENITH ITEMS */}
-      <section id="services" className="services section-pad bg-[#dce7e3]">
-        <div className="section-index">services</div>
+      {/* SERVICES / TREATMENTS SECTION — 3D COVERFLOW INTERACTIVE CAROUSEL */}
+      <section id="services" className="services py-20 px-4 sm:px-8 bg-[#304240] text-white relative overflow-hidden">
+        <div className="section-index light-index">services</div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-baseline mt-8 mb-12 reveal">
-          <div className="lg:col-span-3">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#304240]/75">
-              services
-            </p>
-          </div>
-          <div className="lg:col-span-9">
-            <h2 className="font-serif text-4xl sm:text-6xl font-medium text-[#193331] leading-tight">
-              We Provide Best Treatments
-            </h2>
-          </div>
+        <div className="max-w-6xl mx-auto text-center mb-8">
+          <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#709b9d] mb-2">
+            SPECIALIZED CARE
+          </p>
+          <h2 className="font-serif text-4xl sm:text-6xl font-medium text-white leading-tight">
+            We Provide Best Treatments
+          </h2>
         </div>
 
-        {/* 4-Column Desktop Editorial Grid rendering exact 8 Zenith homepage items */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {ZENITH_HOMEPAGE_SERVICES.map((item, i) => (
-            <div
-              key={item.id}
-              className="service-card reveal bg-[#f6f6f1] rounded-3xl overflow-hidden shadow-lg border border-[#304240]/10 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between"
-            >
-              <div>
-                <div className="service-photo h-52 relative overflow-hidden bg-[#304240]">
-                  <img
-                    src={item.remoteImage || `${A}${item.image}`}
-                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = `${A}${item.image}`; }}
-                    alt={item.title}
-                    title={item.title}
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                  />
-                  <span className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur flex items-center justify-center font-bold text-[10px] text-[#304240]">
-                    0{i + 1}
-                  </span>
-                </div>
-
-                <div className="p-6 space-y-3">
-                  <h3 className="font-serif text-2xl font-semibold text-[#193331] leading-tight">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs text-[#667774] leading-relaxed">
-                    {item.shortCopy}
-                  </p>
-                </div>
-              </div>
-
-              <div className="p-6 pt-0 border-t border-[#193331]/10 mt-auto flex items-center justify-between">
-                <a
-                  href={`${source}${item.href}`}
-                  title="Read More"
-                  className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#304240] hover:text-[#709b9d] transition"
-                >
-                  Read More <Arrow />
-                </a>
-              </div>
-            </div>
-          ))}
+        {/* 3D Coverflow Stage */}
+        <div className="w-full max-w-6xl mx-auto relative z-10">
+          <CoverFlowCarousel
+            items={ZENITH_HOMEPAGE_SERVICES.map((item) => ({
+              tag: `#${item.category}`,
+              titleLine1: item.title.toUpperCase(),
+              titleLine2: "SPECIALIZED CARE",
+              desc: item.shortCopy,
+              img: item.remoteImage || `${A}${item.image}`,
+              ctaText: "Full Details",
+              ctaUrl: `/services/${item.slug}`,
+            }))}
+            autoplay={true}
+            autoplayDelay={5000}
+            className="bg-transparent! min-h-[660px]!"
+          />
         </div>
 
-        <div className="text-center mt-12">
-          <a className="pill dark-pill inline-flex" href={`${source}/our-service/`}>
+        <div className="text-center mt-8">
+          <Link className="pill light-pill inline-flex" to="/services">
             Explore all treatments <Arrow />
-          </a>
+          </Link>
         </div>
       </section>
 

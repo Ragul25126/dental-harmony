@@ -1,9 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { SERVICES_DATA } from "@/lib/zenith-data";
-import { useState } from "react";
+import { SERVICES_DATA, ZENITH_HOMEPAGE_SERVICES } from "@/lib/zenith-data";
+import { useState, useEffect, useRef } from "react";
 import { AppointmentModal } from "@/components/AppointmentModal";
+import { CoverFlowCarousel, CarouselItem } from "@/components/ui/3-d-coverflow-carousel";
 
 export const Route = createFileRoute("/services/")({
   component: ServicesIndexPage,
@@ -11,108 +12,106 @@ export const Route = createFileRoute("/services/")({
 
 const A = "/assets/zenith/";
 
-function Arrow() {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 24 24">
-      <path d="M5 12h14m-5-5 5 5-5 5" />
-    </svg>
-  );
-}
-
-function ServicesIndexPage() {
+export function ServicesIndexPage() {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [selectedServiceTitle, setSelectedServiceTitle] = useState("");
+  const [activeScrollIndex, setActiveScrollIndex] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   const handleBook = (title: string) => {
     setSelectedServiceTitle(title);
     setBookingOpen(true);
   };
 
+  // Convert 8 Zenith Dentistry services into 3D Coverflow carousel items with exact homepage images and content
+  const coverflowItems: CarouselItem[] = ZENITH_HOMEPAGE_SERVICES.map((item) => ({
+    tag: `#${item.category}`,
+    titleLine1: item.title.toUpperCase(),
+    titleLine2: "SPECIALIZED CARE",
+    desc: item.shortCopy,
+    img: item.remoteImage || `${A}${item.image}`,
+    ctaText: "Full Details",
+    ctaUrl: `/services/${item.slug}`,
+  }));
+
+  const totalItems = coverflowItems.length;
+
+  // Track scroll position inside container and map to 3D Coverflow slide index (0 to 7)
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const scrollableDistance = rect.height - viewportHeight;
+      if (scrollableDistance <= 0) return;
+
+      const currentScroll = -rect.top;
+      const progress = Math.max(0, Math.min(1, currentScroll / scrollableDistance));
+      
+      const newIndex = Math.min(totalItems - 1, Math.floor(progress * totalItems));
+      setActiveScrollIndex(newIndex);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [totalItems]);
+
+  const handleCtaClick = (item: CarouselItem) => {
+    if (item.ctaUrl && item.ctaUrl !== "#") {
+      navigate({ to: item.ctaUrl });
+    }
+  };
+
   return (
     <main className="min-h-screen bg-[#dce7e3] text-[#193331]">
       <Header />
 
-      {/* Header */}
-      <section className="pt-36 pb-16 px-[7vw] bg-[#304240] text-white">
-        <div className="max-w-4xl">
-          <p className="eyebrow light">Comprehensive Dental Care</p>
-          <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl leading-none mt-6 mb-6 font-normal">
-            Precision care,<br />
-            <em className="font-light italic">made personal.</em>
-          </h1>
-          <p className="text-lg text-white/80 max-w-2xl leading-relaxed">
-            From preventive check-ups to advanced implant surgery and clear aligner orthodontics, explore our full spectrum of specialized treatments.
-          </p>
-        </div>
-      </section>
-
-      {/* Services Grid */}
-      <section className="section-pad">
-        <div className="section-index">All Treatments & Services</div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-          {SERVICES_DATA.map((item, idx) => (
-            <div
-              key={item.id}
-              className="bg-[#f6f6f1] rounded-3xl overflow-hidden shadow-lg hover:-translate-y-2 transition-transform duration-300 flex flex-col justify-between"
-            >
-              <div>
-                <div className="h-60 relative overflow-hidden">
-                  <img
-                    src={`${A}${item.image}`}
-                    alt={item.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <span className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center font-bold text-xs">
-                    0{idx + 1}
-                  </span>
-                  <span className="absolute bottom-4 left-4 px-3 py-1 bg-[#304240]/80 backdrop-blur text-white text-[10px] uppercase font-bold tracking-wider rounded-full">
-                    {item.category}
-                  </span>
-                </div>
-
-                <div className="p-8">
-                  <h3 className="font-serif text-3xl font-semibold text-[#193331] mb-3">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs text-[#667774] leading-relaxed mb-6">
-                    {item.shortCopy}
-                  </p>
-
-                  <div className="space-y-2 mb-6">
-                    <p className="text-[10px] uppercase tracking-wider font-bold text-[#709b9d]">
-                      Key Highlights:
-                    </p>
-                    <ul className="text-xs text-[#405956] space-y-1">
-                      {item.benefits.slice(0, 2).map((b) => (
-                        <li key={b} className="flex items-start gap-2">
-                          <span className="text-[#709b9d] font-bold">•</span> {b}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-8 pt-0 flex items-center justify-between gap-4 border-t border-[#193331]/10 mt-auto">
-                <Link
-                  to="/services/$serviceSlug"
-                  params={{ serviceSlug: item.slug }}
-                  className="text-xs font-bold uppercase tracking-wider text-[#304240] hover:underline flex items-center gap-2"
-                >
-                  Full Details <Arrow />
-                </Link>
-                <button
-                  onClick={() => handleBook(item.title)}
-                  className="px-4 py-2 bg-[#304240] text-white text-[10px] font-bold uppercase tracking-wider rounded-full hover:bg-[#193331] transition"
-                >
-                  Book Visit
-                </button>
-              </div>
+      {/* Sticky Scroll Section for Pinning 3D Coverflow Presentation */}
+      <div ref={containerRef} className="relative h-[320vh] bg-[#dce7e3]">
+        {/* Sticky Viewport Container */}
+        <div className="sticky top-0 h-screen flex flex-col justify-center items-center px-4 sm:px-8 lg:px-16 overflow-hidden">
+          {/* Header Content */}
+          <div className="max-w-4xl mx-auto text-center mb-2 z-10 shrink-0">
+            <div className="flex items-center justify-center gap-3 mb-2">
+              <span className="w-10 h-[2px] bg-[#304240]" />
+              <span className="text-xs uppercase tracking-[0.3em] font-bold text-[#304240]">
+                SERVICES ({activeScrollIndex + 1} / {totalItems})
+              </span>
+              <span className="w-10 h-[2px] bg-[#304240]" />
             </div>
-          ))}
+
+            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl leading-tight font-normal mb-2 text-[#193331]">
+              Precision care,<br />
+              <em className="font-light italic text-[#304240]">made personal.</em>
+            </h1>
+
+            <p className="text-xs sm:text-sm text-[#405956] max-w-xl mx-auto leading-relaxed mb-3">
+              From preventive check-ups to advanced implant surgery and clear aligner orthodontics, explore our full spectrum of specialized treatments.
+            </p>
+
+            <button
+              onClick={() => handleBook("General Consultation")}
+              className="px-5 py-2 bg-[#304240] text-white font-bold text-[10px] uppercase tracking-widest rounded-full hover:bg-[#193331] transition shadow-md inline-flex items-center gap-2"
+            >
+              Book A Visit
+            </button>
+          </div>
+
+          {/* 3D Coverflow Stage Driven directly by Scroll Position */}
+          <div className="w-full max-w-6xl mx-auto relative z-10 shrink-0">
+            <CoverFlowCarousel
+              items={coverflowItems}
+              externalIndex={activeScrollIndex}
+              scrollDriven={true}
+              autoplay={false}
+              className="bg-transparent! min-h-[580px]!"
+              onCtaClick={handleCtaClick}
+            />
+          </div>
         </div>
-      </section>
+      </div>
 
       <Footer />
       <AppointmentModal
@@ -123,3 +122,7 @@ function ServicesIndexPage() {
     </main>
   );
 }
+
+
+
+
